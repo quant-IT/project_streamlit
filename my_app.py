@@ -9,7 +9,10 @@ st.sidebar.title('Car Price Prediction')
 html_temp = """
 <div style="background-color:blue;padding:10px">
 <h2 style="color:white;text-align:center;">Streamlit ML Cloud App </h2>
+<p style="text-align: center;"><img src="https://i12.haber7.net//fotogaleri/haber7/album/2021/03/mercedes_volkswagen_bmw_audi_opel_skoda_toyota_renault_peugeot_fiat_seat_ve_honda_faizleri_dusurdu_1611393774_2581_w750_h450.jpg" class="img-fluid" width="600" height="350" alt="Auto"></p>
 </div>"""
+
+
 st.markdown(html_temp, unsafe_allow_html=True)
 
 
@@ -20,8 +23,8 @@ gearing_type=st.sidebar.radio('Select gear type',('Automatic','Manual','Semi-aut
 car_model=st.sidebar.selectbox("Select model of your car", ('Audi A1', 'Audi A3', 'Opel Astra', 'Opel Corsa', 'Opel Insignia', 'Renault Clio', 'Renault Duster', 'Renault Espace'))
 
 
-richard_model=pickle.load(open("rf_model_new","rb"))
-richard_transformer = pickle.load(open('transformer', 'rb'))
+qmodel=pickle.load(open("rf_model_new","rb"))
+qtransformer = pickle.load(open('transformer', 'rb'))
 
 
 my_dict = {
@@ -39,11 +42,11 @@ df = pd.DataFrame.from_dict([my_dict])
 st.header("The configuration of your car is below")
 st.table(df)
 
-df2 = richard_transformer.transform(df)
+df2 = qtransformer.transform(df)
 
 st.subheader("Press predict if configuration is okay")
 
 if st.button("Predict"):
-    prediction = richard_model.predict(df2)
-    st.success("The estimated price of your car is €{}. ".format(int(prediction[0])))
-    
+    prediction = qmodel.predict(df2)
+    #st.success("The estimated price of your car is €{}. ".format(int(prediction[0])))
+    st.success("The estimated price of your car is €{}. ".format(prediction[0]))
